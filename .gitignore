@@ -11,7 +11,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -100,8 +99,8 @@ ENV/
 # mypy
 .mypy_cache/
 
-# bpmn-js directory to build dist files to use in project (bpmn.io)
-./bpmn-js/
+# tmp directory
+tmp/*
 
 # sqlite database
 django_bpmn_project/db.demo
