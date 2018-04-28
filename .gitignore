@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# bpmn-js directory to build dist files to use in project (bpmn.io)
+bpmn-js/
+
+# sqlite database
+django_bpmn_project/db.demo
