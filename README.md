@@ -1,4 +1,4 @@
-# django-bpmn
+# django-bpmn (in development)
 BPMN designer for django based on bpmn.io
 
 **Deploy Example:**
