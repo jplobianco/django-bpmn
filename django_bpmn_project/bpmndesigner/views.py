@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 from django.http import HttpResponse
 
@@ -18,6 +19,7 @@ from urllib2 import Request, urlopen
 from xml.dom import minidom
 
 from .models import Diagram
+from .forms import ModelerForm
 
 # Create your views here.
 
@@ -85,3 +87,32 @@ def index(request):
     }
     template = 'bpmndesigner/index.html'
     return render(request, template, context) 
+
+def edit(request, object_id):
+
+    diagram = get_object_or_404(Diagram, pk=object_id)
+
+    if request.method == 'POST':
+
+        form = ModelerForm(request.POST)
+
+        if form.is_valid():
+            diagram.name = form.cleaned_data['name']
+            diagram.content = form.cleaned_data['content']
+            diagram.save()
+
+            return redirect('bpmndesigner:index')
+
+    else:
+        initial_data =  {
+            'name': diagram, 
+            'content':diagram.content
+        }
+        form = ModelerForm(initial_data)
+
+    context = {
+        'form': form,
+        'diagram': diagram,
+    }
+    template = 'bpmndesigner/edit.html'
+    return render(request, template, context)
