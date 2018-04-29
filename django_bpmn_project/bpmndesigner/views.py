@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.conf import settings
 from .models import BPMN
 from os import defpath
+import os
 
 # Create your views here.
 
@@ -22,7 +24,7 @@ def list_bpmn(request):
     return render(request, template, context)
 
 def create_bpmn(request):
-    bpmn_filename = "/home/jplobianco/dev/git/django-bpmn/django_bpmn_project/bpmndesigner/static/diagrams/default.bpmn"
+    bpmn_filename =  os.path.join(settings.BASE_DIR, 'bpmndesigner', 'static', 'diagrams', 'default.bpmn')
     with open(bpmn_filename, 'r') as f:
         bpmn_file_content = f.read()
     context = {'bpmn_filename': bpmn_filename, 'bpmn_file_content': bpmn_file_content, 'id_bpmn': -1}
