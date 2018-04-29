@@ -44,18 +44,35 @@
         bottom: 20px;
         left: 20px;
       }
+
+      #close-button{
+          position: fixed;
+          bottom: 20px;
+          left: 150px;
+      }
     </style>
   </head>
   <body>
 
     <div id="canvas"></div>
 
-    <button id="save-button">print to console</button>
+    <button id="save-button">Save Diagram</button>
+    <button id="close-button">Close Diagram</button>
+
+    <form>
+        {% csrf_token %}
+    </form>
 
     <script>
 
+      var id_bpmn = '{{ id_bpmn }}'
+      var isNewDiagram = false
+
       // the file name to be opened
       var diagramUrl = '{{bpmn_filename}}';
+      {% autoescape off %}
+        var bpmnFileContent = "{{ bpmn_file_content|escapejs }}"
+      {% endautoescape %}
 
 
       // modeler instance
@@ -65,6 +82,10 @@
           bindTo: window
         }
       });
+
+      function isNewDiagram(id){
+          return (id == '' || id == '-1');
+      }
 
       /**
        * Save diagram contents and print them to the console.
@@ -77,9 +98,33 @@
             return console.error('could not save BPMN 2.0 diagram', err);
           }
 
-          alert('Diagram exported. Check the developer tools!');
+          //alert('Diagram exported. Check the developer tools!');
 
-          console.log('DIAGRAM', xml);
+          //console.log('DIAGRAM', xml);
+
+          var name = ''
+          if(id_bpmn == '' || id_bpmn == '-1')
+              name = window.prompt("What is the name of the diagram?"); // just ask for the name if it is a new diagram
+
+          $.ajax({
+              type: 'post',
+              url: "/bpmndesigner/save_bpmn/",
+              data: { name:name, xml_content:xml, id:id_bpmn},
+              success: function(returnData){
+                  status = returnData.status;
+                  msg = returnData.msg;
+                  if(status == '0'){ // TODO: use enum or variable from django models instead of magic number
+                    alert('Error: ' + msg);
+                    console.log(msg);
+                  }
+                  else{
+                      alert(msg);
+                  }
+              },
+              dataType: 'json',
+              headers: {'X-CSRFToken': $("input[name='csrfmiddlewaretoken']").val()}
+          });
+
         });
       }
 
@@ -104,27 +149,23 @@
 
           // zoom to fit full viewport
           canvas.zoom('fit-viewport');
-
-          // attach an overlay to a node
-          overlays.add('SCAN_OK', 'note', {
-            position: {
-              bottom: 0,
-              right: 0
-            },
-            html: '<div class="diagram-note">Mixed up the labels?</div>'
-          });
-
-          // add marker
-          canvas.addMarker('SCAN_OK', 'needs-discussion');
         });
       }
 
 
       // load external diagram file via AJAX and open it
-      $.get(diagramUrl, openDiagram, 'text');
+      //$.get(diagramUrl, openDiagram, 'text');
+      openDiagram(bpmnFileContent);
 
       // wire save button
       $('#save-button').click(exportDiagram);
+
+      $('#close-button').click(function(){
+          // #TODO: check for unsaved changes
+         if (window.confirm("Are you sure you want to close this Diagram?")){
+             document.location.href="/bpmndesigner/"
+         }
+      });
     </script>
     <!--
       Thanks for trying out our BPMN toolkit!

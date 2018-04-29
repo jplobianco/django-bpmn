@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing BPMNs</title>
+</head>
+<body>
+
+<a href="create_bpmn/">Create new Diagram</a>
+
+{% if bpmn_list %}
+    <ul>
+{% for bpmn in bpmn_list %}
+    <li><a href="open_bpmn/{{ bpmn.id }}/">{{ bpmn.name }}</a></li>
+{% endfor %}
+    </ul>
+{% endif %}
+
+</body>
+</html>
