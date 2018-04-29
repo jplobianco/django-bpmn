@@ -13,6 +13,11 @@
 </head>
 <body>
 
+{% if msg %}
+    <div style="display:block; text-align:center;">
+        <span class="alert alert-{{ tag_msg }}">{{ msg }}</span>
+    </div>
+{% endif %}
 <a class="btn btn-success" href="/bpmndesigner/create_bpmn/" style="margin:5px;">Create new Diagram</a>
 {% if bpmn_list %}
     <table class="table table-striped table-bordered">

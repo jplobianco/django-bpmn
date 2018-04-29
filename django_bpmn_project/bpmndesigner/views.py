@@ -71,8 +71,14 @@ def open_bpmn(request, id):
 
 def delete_bpmn(request, id):
     try:
-        BPMN.objects.filter(id=id).delete()
-        msg = u"Diagram deleted successfully!"
+        qs = BPMN.objects.filter(id=id)
+        if qs.exists():
+            name = qs[0].name
+            msg = u"Diagram '%s' deleted successfully!" % name
+            qs.delete()
+        else:
+            msg = None
+            tag_msg = None
         tag_msg = 'success'
     except Exception as err:
         msg = err.message
