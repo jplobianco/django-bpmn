@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Modeler</title>
+    <title>MODELER</title>
 
     <!-- required modeler styles -->
     <link rel="stylesheet" href="{% static 'bpmn-js/dist/assets/diagram-js.css' %}">
@@ -55,8 +55,7 @@
     <script>
 
       // the file name to be opened
-      var diagramUrl = '{{bpmn_filename}}';
-
+      var diagramUrl = '{{bpmn_filename_url}}';
 
       // modeler instance
       var bpmnModeler = new BpmnJS({

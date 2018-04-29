@@ -9,9 +9,16 @@
     DJANGO BPMN DESIGNER PROJECT (in development)
     
     <ul>
-      <li>Loads a file path given given by view "modeler"</li>
-      <a href="{% url 'bpmndesigner:modeler' %}">Try!</a>
-    </ul>      
+      MODELER
+      <li>Loads a file from external URL</li>
+      <a href="{% url 'bpmndesigner:modeler' %}">OPEN MODELER</a>
+    </ul>    
+    
+    <ul>
+        VIEWER
+        <li>Loads the file: "media/bpmndesigner_data/diagram.bpmn"</li>
+        <a href="{% url 'bpmndesigner:viewer' %}">OPEN VIEWER</a>
+      </ul>     
  
   </body>
 </html>
