@@ -104,3 +104,6 @@ tmp/*
 
 # sqlite database
 django_bpmn_project/db.demo
+
+# Visual Code Editor
+.vscode/

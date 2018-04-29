@@ -68,10 +68,15 @@ def viewer(request):
 
     data_dir = 'bpmndesigner_data'
     filename = 'diagram.bpmn'
-    path = '{}/{}'.format(data_dir,filename)
+    path = '{}{}/{}'.format(settings.MEDIA_ROOT, data_dir, filename)
+
+    f = open(path)
+    file_content = f.read()
+    print(file_content)
 
     context = {
         'bpmn_filename_url':  path,
+        'file_content': file_content,
     }
     template = 'bpmndesigner/viewer.html'
     return render(request, template, context) 

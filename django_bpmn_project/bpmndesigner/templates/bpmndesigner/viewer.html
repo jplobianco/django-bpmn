@@ -43,6 +43,11 @@
 
     <script>
 
+      {% autoescape off %}
+        var fileContent = "{{ file_content|escapejs }}"
+      {% endautoescape %}
+      console.log(fileContent);
+
       var diagramUrl =  '{{MEDIA_URL}}{{bpmn_filename_url}}';
       console.log(diagramUrl);
 
@@ -88,7 +93,8 @@
       }
 
       // load external diagram file via AJAX and open it
-      $.get(diagramUrl, openDiagram, 'text');
+      // $.get(diagramUrl, openDiagram, 'text');
+      openDiagram(fileContent)
    
      
       
