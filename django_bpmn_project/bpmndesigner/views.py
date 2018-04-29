@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+
 from django.http import HttpResponse
 
 from django.conf import settings
@@ -66,20 +68,11 @@ def modeler(request):
     return render(request, template, context)    
 
 
-def viewer(request):
+def viewer(request, object_id):
 
-    data_dir = 'bpmndesigner_data'
-    filename = 'diagram.bpmn'
-    path = '{}{}/{}'.format(settings.MEDIA_ROOT, data_dir, filename)
-
-    f = open(path)
-    file_content = f.read()
-    print(file_content)
-
-    diagram = Diagram.objects.create(name='Teste1',content=file_content)
+    diagram = get_object_or_404(Diagram, pk=object_id)
 
     context = {
-        'bpmn_filename_url':  path,
         'file_content': diagram.content,
     }
     template = 'bpmndesigner/viewer.html'
