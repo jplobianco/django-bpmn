@@ -9,16 +9,17 @@
     DJANGO BPMN DESIGNER PROJECT (in development)
     
     <ul>
+      <li><a href="{% url 'bpmndesigner:index' %}">Diagrams List</a></li>
+      <li>To create one, copy the content of a bpmn file, access the admin, click add new diagram and paste the file content into content field of form.</li>
+    </ul>    
+
+    <ul>
       MODELER
       <li>Loads a file from external URL</li>
       <a href="{% url 'bpmndesigner:modeler' %}">OPEN MODELER</a>
     </ul>    
     
-    <ul>
-        VIEWER
-        <li>Loads the file: "media/bpmndesigner_data/diagram.bpmn"</li>
-        <a href="{% url 'bpmndesigner:viewer' %}">OPEN VIEWER</a>
-      </ul>     
+ 
  
   </body>
 </html>

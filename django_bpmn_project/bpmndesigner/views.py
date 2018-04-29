@@ -78,4 +78,10 @@ def viewer(request, object_id):
     template = 'bpmndesigner/viewer.html'
     return render(request, template, context) 
 
-
+def index(request):
+    diagrams = Diagram.objects.all()
+    context = {
+        'diagrams': diagrams,
+    }
+    template = 'bpmndesigner/index.html'
+    return render(request, template, context) 

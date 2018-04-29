@@ -1,0 +1,6 @@
+Diagrams:
+<br>
+{% for diagram in diagrams %}
+    <a href="{% url 'bpmndesigner:viewer' diagram.id %}">{{ diagram.name }}</a>
+    <br>
+{% endfor %} 
