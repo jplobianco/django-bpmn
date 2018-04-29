@@ -15,6 +15,8 @@ from urllib2 import Request, urlopen
 
 from xml.dom import minidom
 
+from .models import Diagram
+
 # Create your views here.
 
 def example_diagram():
@@ -74,9 +76,11 @@ def viewer(request):
     file_content = f.read()
     print(file_content)
 
+    diagram = Diagram.objects.create(name='Teste1',content=file_content)
+
     context = {
         'bpmn_filename_url':  path,
-        'file_content': file_content,
+        'file_content': diagram.content,
     }
     template = 'bpmndesigner/viewer.html'
     return render(request, template, context) 
