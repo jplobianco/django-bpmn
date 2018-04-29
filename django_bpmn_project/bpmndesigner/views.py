@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import BPMN
 from os import defpath
@@ -68,3 +68,16 @@ def open_bpmn(request, id):
 
     except Exception as err: #TODO: implement specific exception for each error situation with specific error handling
         print(err)
+
+def delete_bpmn(request, id):
+    try:
+        BPMN.objects.filter(id=id).delete()
+        msg = u"Diagram deleted successfully!"
+        tag_msg = 'success'
+    except Exception as err:
+        msg = err.message
+        tag_msg = 'error'
+    bpmn_list = BPMN.objects.all()
+    context = {'bpmn_list':bpmn_list, 'msg': msg, 'tag_msg': tag_msg}
+    template = 'bpmndesigner/list.html'
+    return render(request, template, context)

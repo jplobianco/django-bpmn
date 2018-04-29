@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Listing BPMNs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <style>
+        table td{
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
 
-<a href="create_bpmn/">Create new Diagram</a>
-
+<a class="btn btn-success" href="/bpmndesigner/create_bpmn/" style="margin:5px;">Create new Diagram</a>
 {% if bpmn_list %}
-    <ul>
+    <table class="table table-striped table-bordered">
 {% for bpmn in bpmn_list %}
-    <li><a href="open_bpmn/{{ bpmn.id }}/">{{ bpmn.name }}</a></li>
+    <tr>
+        <td align="center"><a href="/bpmndesigner/open_bpmn/{{ bpmn.id }}/">{{ bpmn.name }}</a></td>
+        <td><a class="btn btn-danger" href="/bpmndesigner/delete_bpmn/{{ bpmn.id }}/">Exclude</a></td>
+    </tr>
 {% endfor %}
-    </ul>
+    </table>
 {% endif %}
 
 </body>
