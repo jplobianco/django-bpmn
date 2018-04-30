@@ -97,6 +97,7 @@ def edit(request, object_id):
         if form.is_valid():
             diagram.name = form.cleaned_data['name']
             diagram.content = form.cleaned_data['content']
+            diagram.svg_content = form.cleaned_data['svg_content']
             diagram.save()
             return redirect('bpmndesigner:edit', diagram.id)
     else:

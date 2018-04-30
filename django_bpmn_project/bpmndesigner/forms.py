@@ -18,6 +18,7 @@ class ModelerForm(forms.Form):
 
     name = forms.CharField(label='Name', required=True)
     content = forms.CharField(widget=forms.HiddenInput, label='Content', required=True)
+    svg_content = forms.CharField(widget=forms.HiddenInput, label='Content', required=True)
 
     def __repr__(self):
         return 'ModelerForm: '

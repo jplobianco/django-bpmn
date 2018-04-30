@@ -42,16 +42,16 @@
         stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
       }
 
-      #save-button {
-        position: fixed;
-        bottom: 20px;
-        left: 200px;
-      }
-
       #id_name {
         position: fixed;
         bottom: 20px;
         left: 20px;
+      }
+
+      #save-button {
+        position: fixed;
+        bottom: 20px;
+        left: 200px;
       }
 
     </style>
@@ -65,6 +65,7 @@
     {% csrf_token %}
     {{ form.name }}
     {{ form.content }}
+    {{ form.svg_content }}
 </form>
 
 
@@ -86,7 +87,7 @@
       /**
        * Save diagram contents and print them to the console.
        */
-      function exportDiagram() {
+      function exportDiagramXML() {
 
         bpmnModeler.saveXML({ format: true }, function(err, xml) {
 
@@ -94,12 +95,32 @@
             return console.error('could not save BPMN 2.0 diagram', err);
           }
 
-          //alert('Diagram exported. Check the developer tools!');
-
-          //console.log('DIAGRAM', xml);
+          console.log('BPMN XML Exported!')
           $('#id_content').val(xml);
-          $('#edit_form').trigger('submit');
         });
+      }
+
+      /**
+       * Export SVG diagram.
+       */
+      function exportDiagramSVG() {
+
+        bpmnModeler.saveSVG(function(err, svg) {
+
+          if (err) {
+            return console.error('could not export BPMN 2.0 diagram as SVG', err);
+          }
+
+          console.log('BPMN SVG Exported!')
+          $('#id_svg_content').val(svg);
+
+        });
+      }
+
+      function saveBPMN() {
+        exportDiagramXML();
+        exportDiagramSVG();
+        $('#edit_form').trigger('submit');
       }
 
       /**
@@ -120,30 +141,17 @@
           var canvas = bpmnModeler.get('canvas');
           var overlays = bpmnModeler.get('overlays');
 
-
           // zoom to fit full viewport
           canvas.zoom('fit-viewport');
 
-          // attach an overlay to a node
-          overlays.add('SCAN_OK', 'note', {
-            position: {
-              bottom: 0,
-              right: 0
-            },
-            html: '<div class="diagram-note">Mixed up the labels?</div>'
-          });
-
-          // add marker
-          canvas.addMarker('SCAN_OK', 'needs-discussion');
         });
       }
 
       // load external diagram file via AJAX and open it
-      // $.get(diagramUrl, openDiagram, 'text');
       openDiagram(fileContent)
 
       // wire save button
-      $('#save-button').click(exportDiagram);
+      $('#save-button').click(saveBPMN);
     </script>
 <!--
   Thanks for trying out our BPMN toolkit!
