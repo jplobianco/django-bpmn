@@ -85,7 +85,7 @@ def index(request):
     context = {
         'diagrams': diagrams,
     }
-    template = 'bpmndesigner/index.html'
+    template = 'bpmndesigner/album.html'
     return render(request, template, context) 
 
 def edit(request, object_id):
