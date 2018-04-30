@@ -104,7 +104,11 @@
 
           var name = ''
           if(id_bpmn == '' || id_bpmn == '-1')
-              name = window.prompt("What is the name of the diagram?"); // just ask for the name if it is a new diagram
+              name = window.prompt("What is the name of the diagram?", ''); // just ask for the name if it is a new diagram
+
+          if(name == '')
+              alert('The diagram was not saved.')
+              return; // if name was not informed, then stop save proccess
 
           $.ajax({
               type: 'post',
