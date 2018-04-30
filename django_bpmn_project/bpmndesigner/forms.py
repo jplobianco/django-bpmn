@@ -13,9 +13,11 @@ class ModelerForm(forms.Form):
 
     #     super(ModelerForm, self).__init__(*args, **kwargs)
 
-    # Fields:   
+    # Fields:
+    #(widget=forms.HiddenInput())
+
     name = forms.CharField(label='Name', required=True)
-    content = forms.CharField(widget=forms.Textarea, label='Content', required=True)
+    content = forms.CharField(widget=forms.HiddenInput, label='Content', required=True)
 
     def __repr__(self):
         return 'ModelerForm: '

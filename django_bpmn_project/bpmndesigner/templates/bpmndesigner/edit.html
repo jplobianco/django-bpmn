@@ -1,11 +1,176 @@
-{% block content %}
-    
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
-        {{ form }}
-        </table>
-        <input type="submit" value="Submit" />
-    </form>
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Django BMPN Designer: {{diagram.name}}</title>
 
-{% endblock %}
+    <!-- required modeler styles -->
+    <link rel="stylesheet" href="{% static 'bpmn-js/dist/assets/diagram-js.css' %}">
+    <link rel="stylesheet" href="{% static 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css' %}">
+
+    <!-- modeler distro -->
+    <script src="{% static 'bpmn-js/dist/bpmn-modeler.development.js' %}"></script>
+
+    <!-- needed for this example only -->
+    <script src="{% static 'jquery/dist/jquery.js' %}"></script>
+
+    <!--LOADING ANIMATION-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+
+    <!-- example of layout style -->
+    <style>
+      html, body, #canvas {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .diagram-note {
+        background-color: rgba(66, 180, 21, 0.7);
+        color: White;
+        border-radius: 5px;
+        font-family: Arial;
+        font-size: 12px;
+        padding: 5px;
+        min-height: 16px;
+        width: 50px;
+        text-align: center;
+      }
+
+      .needs-discussion:not(.djs-connection) .djs-visual > :nth-child(1) {
+        stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
+      }
+
+      #save-button {
+        position: fixed;
+        bottom: 20px;
+        left: 200px;
+      }
+
+      #id_name {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+      }
+
+    </style>
+</head>
+<body>
+
+<div id="canvas"></div>
+
+<button id="save-button">Save</button>
+<form action="" method="post" id="edit_form">
+    {% csrf_token %}
+    {{ form.name }}
+    {{ form.content }}
+</form>
+
+
+<script>
+
+      // Get xml content from model.
+      {% autoescape off %}
+        var fileContent = "{{ file_content|escapejs }}"
+      {% endautoescape %}
+
+      // modeler instance
+      var bpmnModeler = new BpmnJS({
+        container: '#canvas',
+        keyboard: {
+          bindTo: window
+        }
+      });
+
+      /**
+       * Save diagram contents and print them to the console.
+       */
+      function exportDiagram() {
+
+        bpmnModeler.saveXML({ format: true }, function(err, xml) {
+
+          if (err) {
+            return console.error('could not save BPMN 2.0 diagram', err);
+          }
+
+          //alert('Diagram exported. Check the developer tools!');
+
+          //console.log('DIAGRAM', xml);
+          $('#id_content').val(xml);
+          $('#edit_form').trigger('submit');
+        });
+      }
+
+      /**
+       * Open diagram in our modeler instance.
+       *
+       * @param {String} bpmnXML diagram to display
+       */
+      function openDiagram(bpmnXML) {
+
+        // import diagram
+        bpmnModeler.importXML(bpmnXML, function(err) {
+
+          if (err) {
+            return console.error('could not import BPMN 2.0 diagram', err);
+          }
+
+          // access modeler components
+          var canvas = bpmnModeler.get('canvas');
+          var overlays = bpmnModeler.get('overlays');
+
+
+          // zoom to fit full viewport
+          canvas.zoom('fit-viewport');
+
+          // attach an overlay to a node
+          overlays.add('SCAN_OK', 'note', {
+            position: {
+              bottom: 0,
+              right: 0
+            },
+            html: '<div class="diagram-note">Mixed up the labels?</div>'
+          });
+
+          // add marker
+          canvas.addMarker('SCAN_OK', 'needs-discussion');
+        });
+      }
+
+      // load external diagram file via AJAX and open it
+      // $.get(diagramUrl, openDiagram, 'text');
+      openDiagram(fileContent)
+
+      // wire save button
+      $('#save-button').click(exportDiagram);
+    </script>
+<!--
+  Thanks for trying out our BPMN toolkit!
+
+  This example uses the pre-built distribution of the bpmn-js modeler.
+  Consider rolling your own distribution to have more flexibility
+  regarding which features to include.
+
+  Checkout our advanced examples section to learn more:
+  * https://github.com/bpmn-io/bpmn-js-examples#advanced
+
+  To get a bit broader overview over how bpmn-js works,
+  follow our walkthrough:
+  * https://bpmn.io/toolkit/bpmn-js/walkthrough/
+
+  Related starters:
+  * https://raw.githubusercontent.com/bpmn-io/bpmn-js-examples/starter/viewer.html
+-->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

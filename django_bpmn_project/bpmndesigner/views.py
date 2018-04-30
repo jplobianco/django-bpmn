@@ -93,16 +93,12 @@ def edit(request, object_id):
     diagram = get_object_or_404(Diagram, pk=object_id)
 
     if request.method == 'POST':
-
         form = ModelerForm(request.POST)
-
         if form.is_valid():
             diagram.name = form.cleaned_data['name']
             diagram.content = form.cleaned_data['content']
             diagram.save()
-
-            return redirect('bpmndesigner:index')
-
+            return redirect('bpmndesigner:edit', diagram.id)
     else:
         initial_data =  {
             'name': diagram, 
@@ -113,6 +109,7 @@ def edit(request, object_id):
     context = {
         'form': form,
         'diagram': diagram,
+        'file_content': diagram.content,
     }
     template = 'bpmndesigner/edit.html'
     return render(request, template, context)

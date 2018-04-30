@@ -50,12 +50,17 @@
 
     <div id="canvas"></div>
 
-    <button id="save-button">print to console</button>
+    <button id="save-button">Save</button>
 
     <script>
 
       // the file name to be opened
       var diagramUrl = '{{bpmn_filename_url}}';
+
+      // Get xml content from model.
+      {% autoescape off %}
+        var fileContent = "{{ file_content|escapejs }}"
+      {% endautoescape %}
 
       // modeler instance
       var bpmnModeler = new BpmnJS({
@@ -78,7 +83,9 @@
 
           alert('Diagram exported. Check the developer tools!');
 
-          console.log('DIAGRAM', xml);
+          //console.log('DIAGRAM', xml);
+          $('#id_content').val(xml);
+          $('#edit_form').trigger('submit');
         });
       }
 
@@ -120,7 +127,8 @@
 
 
       // load external diagram file via AJAX and open it
-      $.get(diagramUrl, openDiagram, 'text');
+      // $.get(diagramUrl, openDiagram, 'text');
+      openDiagram(fileContent)
 
       // wire save button
       $('#save-button').click(exportDiagram);
