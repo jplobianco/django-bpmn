@@ -54,16 +54,16 @@
 
     <main role="main">
 
-      <!--<section class="jumbotron text-center">-->
-        <!--<div class="container">-->
-          <!--<h1 class="jumbotron-heading">Album example</h1>-->
-          <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>-->
-          <!--<p>-->
-            <!--<a href="#" class="btn btn-primary my-2">Main call to action</a>-->
-            <!--<a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
-          <!--</p>-->
-        <!--</div>-->
-      <!--</section>-->
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">ITD Album</h1>
+          <p class="lead text-muted">In this album you can find all Information Technology Department's BPMN Processes. The ITD is member of the Federal Science and Technology Organization</p>
+          <p>
+            <a href="{% url 'admin:bpmndesigner_diagram_add' %}" class="btn btn-primary my-2">Create New BPMN</a>
+            <a href="{% url 'admin:bpmndesigner_diagram_changelist' %}" class="btn btn-secondary my-2">Back to Album's List</a>
+          </p>
+        </div>
+      </section>
 
       <div class="album py-5 bg-light">
         <div class="container">
@@ -76,6 +76,7 @@
                       <p class="card-text">This is the BPMN process description. This process describes how to...</p>
                       <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
+                          <a class="btn btn-sm btn-outline-secondary" href="{% url 'bpmndesigner:view_svg' diagram.id %}">SVG</a>
                           <a class="btn btn-sm btn-outline-secondary" href="{% url 'bpmndesigner:viewer' diagram.id %}">View</a>
                           <a class="btn btn-sm btn-outline-secondary" href="{% url 'bpmndesigner:edit' diagram.id %}">Edit</a>
                         </div>

@@ -78,7 +78,17 @@ def viewer(request, object_id):
         'file_content': diagram.content,
     }
     template = 'bpmndesigner/viewer.html'
-    return render(request, template, context) 
+    return render(request, template, context)
+
+def view_svg(request, object_id):
+
+    diagram = get_object_or_404(Diagram, pk=object_id)
+
+    context = {
+        'svg_content': diagram.svg_content,
+    }
+    template = 'bpmndesigner/view_svg.html'
+    return render(request, template, context)
 
 def index(request):
     diagrams = Diagram.objects.all()

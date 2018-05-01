@@ -18,10 +18,10 @@ class Diagram(models.Model):
     name = models.CharField("Name", max_length=255, null=False, blank=False)
     content = models.TextField("XML Content", null=True, blank=True,
                                default=default_xml_content)
-    svg_content = models.TextField("SVG Content", null=True, blank=True)
+    svg_content = models.TextField("SVG Content", null=True, blank=True, default=None)
 
-    def __str__(self):
-        return self.name
+    def __unicode__(self):
+        return u'{}'.format(self.name)
 
     class Meta:
         ordering = ('name',)

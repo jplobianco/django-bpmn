@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^bpmndesigner/', include('bpmndesigner.urls', namespace="bpmndesigner")),    
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('core.urls', namespace="core")),
+    url(r'^core/', include('core.urls', namespace="core")),
+    url(r'^', include('bpmndesigner.urls', namespace="bpmndesigner")),
 ]
 
 if settings.DEBUG is True:
