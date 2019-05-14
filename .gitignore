@@ -106,3 +106,4 @@ tmp/*
 django_bpmn_project/db.demo
 
 .idea
+db.demo
