@@ -13,7 +13,7 @@ Add 'django_bpmn' to _INSTALLED_APPS_
 
 In a text field in your form add the _widget=BPMNWidget_
 
- ```
+ ```python
 from django import forms
 from django_bpmn.widget import BPMNWidget
 
@@ -35,7 +35,7 @@ class BPMNModelForm(forms.ModelForm):
 
 The model attibute that store the attribute should be a blob type like TextField.
 
-```
+```python
 from django.db import models
 
 
