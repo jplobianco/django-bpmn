@@ -13,6 +13,37 @@ Add 'django_bpmn' to _INSTALLED_APPS_
 
 In a text field in your form add the _widget=BPMNWidget_
 
+ ```
+from django import forms
+from django_bpmn.widget import BPMNWidget
+
+from sample.models import BPMN
+
+
+class BPMNForm(forms.Form):
+    diagram = forms.CharField(widget=BPMNWidget)
+
+
+class BPMNModelForm(forms.ModelForm):
+    diagram = forms.CharField(widget=BPMNWidget)
+
+    class Meta:
+        model = BPMN
+        exclude = ()
+
+ ```
+
+The model attibute that store the attribute should be a blob type like TextField.
+
+```
+from django.db import models
+
+
+class BPMN(models.Model):
+    diagram = models.TextField('Diagram')
+
+```
+
 
 ## Sample
 
