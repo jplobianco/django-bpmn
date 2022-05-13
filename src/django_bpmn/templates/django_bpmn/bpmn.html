@@ -1,0 +1,49 @@
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+<div id="canvas_{{ widget.name|safe }}" class="bpmn_canvas"></div>
+<script>
+    var empty_diagram = '<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd"><process id="Process_1ib5c06" /><bpmndi:BPMNDiagram id="sid-74620812-92c4-44e5-949c-aa47393d3830"><bpmndi:BPMNPlane id="sid-cdcae759-2af7-4a6d-bd02-53f3352a731d" bpmnElement="Process_1ib5c06" /><bpmndi:BPMNLabelStyle id="sid-e0502d32-f8d1-41cf-9c4a-cbb49fecf581"><omgdc:Font name="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" /></bpmndi:BPMNLabelStyle><bpmndi:BPMNLabelStyle id="sid-84cb49fd-2f7c-44fb-8950-83c3fa153d3b"><omgdc:Font name="Arial" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" /></bpmndi:BPMNLabelStyle></bpmndi:BPMNDiagram></definitions>'
+
+    var bpmnJS_{{ widget.name|safe }} = new BpmnJS({
+        container: '#canvas_{{ widget.name|safe }}',
+        keyboard: {
+            bindTo: window
+        }
+    });
+    var diagram_{{ widget.name|safe }} = empty_diagram
+    {% if widget.value %} diagram_{{ widget.name|safe }} = "{{ widget.value|stringformat:'s' }}" {% endif %}
+
+    async function openDiagram_{{ widget.name|safe }}(bpmnXML){
+        try{
+            // bpmnXML = empty_diagram
+            await bpmnJS_{{ widget.name|safe }}.importXML(bpmnXML);
+
+            // access viewer components
+            var canvas_{{ widget.name|safe }} = bpmnJS_{{ widget.name|safe }}.get('canvas');
+
+            // zoom to fit full viewport
+            canvas_{{ widget.name|safe }}.zoom('fit-viewport');
+        } catch(err) {
+            console.error('could not import BPMN 2.0 diagram', err);
+        }
+    }
+    {% if widget.value %}
+        openDiagram_{{ widget.name|safe }}('{{ widget.value|safe }}')
+    {% else %}
+        openDiagram_{{ widget.name|safe }}(empty_diagram)
+    {% endif %}
+
+    async function saveDiagram_{{ widget.name|safe }}(){
+        try{
+            const result = await bpmnJS_{{ widget.name|safe }}.saveXML({ format: false });
+            const { xml } = result;
+            document.querySelector('#id_{{ widget.name|safe }}').value = xml.replace('\r', '').replace('\n', '');
+        } catch (err) {
+            console.error('could not save BPMN 2.0 diagram', err);
+        }
+    }
+
+    document.querySelector('#canvas_{{ widget.name|safe }}').addEventListener('click', function(){
+        saveDiagram_{{ widget.name|safe }}()
+    })
+
+</script>

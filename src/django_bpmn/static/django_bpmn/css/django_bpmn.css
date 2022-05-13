@@ -1,0 +1,4 @@
+.djs-container, .djs-palette-shown, .djs-palette-two-column, .djs-palette-open{
+    height: auto !important;
+    min-height: 500px !important;
+}
